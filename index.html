@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSC CGL CBT Mock Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        .card-hover { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -8px rgba(15, 23, 42, 0.12); }
+        .question-box, .question-text, .question-wrap {
+            white-space: normal;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            overflow-x: visible;
+            display: block;
+            width: 100%;
+        }
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 h-full flex flex-col overflow-x-hidden">
+
+    <!-- Top Navbar (Home & Chapters) -->
+    <header id="portal-navbar" class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-2xs">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2">
+            <div class="flex items-center space-x-2.5 cursor-pointer min-w-0" onclick="navigateTo('home')">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-sky-600 text-white flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-book-open-reader text-base sm:text-lg"></i>
+                </div>
+                <div class="truncate">
+                    <span class="font-extrabold text-base sm:text-xl tracking-tight text-slate-900">SSC CGL CBT Portal</span>
+                    <p class="text-[11px] text-slate-500 hidden sm:block">Mobile & Desktop Practice • +2.0 / -0.50 Marking</p>
+                </div>
+            </div>
+
+            <button type="button" onclick="navigateTo('home')" class="text-xs sm:text-sm font-semibold text-sky-600 hover:text-sky-800 bg-sky-50 hover:bg-sky-100 px-3 py-2 rounded-lg transition shrink-0 touch-manipulation">
+                <i class="fa-solid fa-house mr-1"></i>Subjects
+            </button>
+        </div>
+    </header>
+
+    <!-- VIEW 1: SUBJECT SELECTION -->
+    <section id="view-home" class="flex-1 overflow-y-auto">
+        <div class="bg-gradient-to-r from-sky-700 via-sky-600 to-indigo-700 text-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+                <div class="max-w-3xl space-y-2.5">
+                    <span class="inline-flex items-center space-x-1.5 bg-white/15 text-sky-100 text-[11px] sm:text-xs font-semibold px-3 py-1 rounded-full">
+                        <i class="fa-solid fa-mobile-screen-button text-amber-300"></i>
+                        <span>Phone & Laptop Ready • Auto-Saved Progress</span>
+                    </span>
+                    <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+                        SSC CGL Chapter-Wise Practice Hub
+                    </h1>
+                    <p class="text-sky-100 text-xs sm:text-base leading-relaxed">
+                        Practice one question at a time with instant rule breakdowns, distractor traps, and 10-second exam shortcuts.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+            <h2 class="text-lg sm:text-xl font-bold text-slate-900 mb-4">Select Subject</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                <div onclick="navigateTo('chapters')" class="card-hover cursor-pointer bg-white rounded-2xl border-2 border-sky-500 p-5 sm:p-6 flex flex-col justify-between shadow-xs touch-manipulation">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center mb-3.5">
+                            <i class="fa-solid fa-language text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-base sm:text-lg text-slate-900">English Language</h3>
+                        <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">
+                            Pronoun bank, Noun & Number, and Subject-Verb Agreement drills.
+                        </p>
+                    </div>
+                    <button type="button" class="mt-5 w-full bg-sky-600 hover:bg-sky-700 text-white font-semibold text-xs sm:text-sm py-2.5 rounded-xl transition">
+                        Explore Chapters →
+                    </button>
+                </div>
+
+                <div onclick="showToast('Quantitative Aptitude is ready to be added in data/questions.js!')" class="card-hover cursor-pointer bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 flex flex-col justify-between opacity-90 touch-manipulation">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center mb-3.5">
+                            <i class="fa-solid fa-calculator text-lg"></i>
+                        </div>
+                        <h3 class="font-bold text-base sm:text-lg text-slate-800">Quantitative Aptitude</h3>
+                        <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Arithmetic & Advance Maths chapter sets.</p>
+                    </div>
+                    <span class="mt-5 block text-center bg-slate-100 text-slate-500 font-semibold text-xs py-2.5 rounded-xl">Coming Soon</span>
+                </div>
+
+                <div onclick="showToast('Reasoning is ready to be added in data/questions.js!')" class="card-hover cursor-pointer bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 flex flex-col justify-between opacity-90 touch-manipulation">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center mb-3.5">
+                            <i class="fa-solid fa-brain text-lg"></i>
+                        </div>
+                        <h3 class="font-bold text-base sm:text-lg text-slate-800">Reasoning</h3>
+                        <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Verbal & Non-Verbal reasoning mock sets.</p>
+                    </div>
+                    <span class="mt-5 block text-center bg-slate-100 text-slate-500 font-semibold text-xs py-2.5 rounded-xl">Coming Soon</span>
+                </div>
+
+                <div onclick="showToast('General Awareness is ready to be added in data/questions.js!')" class="card-hover cursor-pointer bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 flex flex-col justify-between opacity-90 touch-manipulation">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-3.5">
+                            <i class="fa-solid fa-globe-asia text-lg"></i>
+                        </div>
+                        <h3 class="font-bold text-base sm:text-lg text-slate-800">General Awareness</h3>
+                        <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Polity, History, Geography, Science & GK.</p>
+                    </div>
+                    <span class="mt-5 block text-center bg-slate-100 text-slate-500 font-semibold text-xs py-2.5 rounded-xl">Coming Soon</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VIEW 2: CHAPTER SELECTION -->
+    <section id="view-chapters" class="hidden flex-1 overflow-y-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-5">
+            <div class="flex items-center justify-between bg-white px-4 py-3 rounded-xl border border-slate-200">
+                <button type="button" onclick="navigateTo('home')" class="text-xs sm:text-sm font-bold text-sky-600 hover:underline touch-manipulation">
+                    ← All Subjects
+                </button>
+                <span class="text-xs font-semibold text-slate-600">+2.0 / -0.50</span>
+            </div>
+
+            <div>
+                <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900">English Language Chapters</h1>
+                <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Tap a chapter to start or resume CBT practice</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5" id="chapters-grid"></div>
+        </div>
+    </section>
+
+    <!-- VIEW 3: QUIZ PANEL -->
+    <section id="view-quiz" class="hidden flex-1 flex flex-col h-full overflow-hidden">
+        <header id="quiz-header" class="bg-sky-900 text-white shadow-md px-2.5 sm:px-5 py-2 flex flex-wrap justify-between items-center gap-2 z-20 shrink-0">
+            <div class="flex items-center space-x-2 min-w-0">
+                <button type="button" onclick="navigateTo('chapters')" class="bg-sky-800 hover:bg-sky-700 text-sky-100 px-2.5 py-1.5 rounded-lg text-xs font-semibold border border-sky-700 shrink-0 touch-manipulation">
+                    ← Chapters
+                </button>
+                <span id="quiz-breadcrumb-chapter" class="hidden lg:inline font-bold text-xs text-white truncate"></span>
+                <span id="quiz-mobile-title" class="lg:hidden font-bold text-xs sm:text-sm text-white truncate"></span>
+            </div>
+
+            <div class="flex items-center flex-wrap gap-1.5 sm:gap-2">
+                <div class="bg-sky-950/70 border border-sky-700 px-2.5 py-1 rounded-lg flex items-center space-x-2 text-xs font-semibold">
+                    <div>Score: <span id="stat-score" class="text-amber-300 font-extrabold">0.0</span></div>
+                    <span class="text-sky-700">|</span>
+                    <div>Acc: <span id="stat-accuracy" class="text-sky-200 font-bold">0%</span></div>
+                    <span class="hidden sm:inline text-sky-700">|</span>
+                    <span class="hidden sm:inline text-emerald-300">✓ <strong id="stat-correct">0</strong></span>
+                    <span class="hidden sm:inline text-red-300">✕ <strong id="stat-incorrect">0</strong></span>
+                </div>
+
+                <button type="button" onclick="toggleSidePanel()" id="toggle-sidebar-btn" class="bg-white text-sky-900 hover:bg-sky-50 px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center space-x-1 touch-manipulation">
+                    <span id="sidebar-btn-icon">📋</span>
+                    <span id="sidebar-btn-text">Palette</span>
+                </button>
+
+                <button type="button" onclick="toggleFullScreenQuestion()" id="fullscreen-btn" class="bg-amber-400 hover:bg-amber-300 text-slate-900 px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center space-x-1 touch-manipulation">
+                    <span id="fullscreen-icon">⛶</span>
+                    <span id="fullscreen-text" class="hidden sm:inline">Focus</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Full Screen Focus Bar -->
+        <div id="fullscreen-floating-bar" class="hidden bg-slate-900 text-white px-3.5 py-2 flex justify-between items-center text-xs shrink-0 z-30">
+            <div class="flex items-center space-x-2.5">
+                <span class="bg-sky-600 px-2 py-0.5 rounded font-bold">Focus Mode</span>
+                <span>Q <strong id="fs-q-curr">1</strong>/<strong id="fs-q-total">1</strong></span>
+                <span class="text-amber-300 font-bold">Score: <span id="fs-score">0.0</span></span>
+            </div>
+            <button type="button" onclick="toggleFullScreenQuestion()" class="bg-amber-400 text-slate-900 font-bold px-2.5 py-1 rounded-lg touch-manipulation">
+                ✕ Exit
+            </button>
+        </div>
+
+        <div class="flex-1 flex flex-col md:flex-row overflow-hidden relative">
+            <main id="question-panel" class="flex-1 flex flex-col bg-slate-100/70 md:border-r border-slate-200 overflow-hidden">
+                <div class="bg-white border-b border-slate-200 px-3 sm:px-6 py-2 flex justify-between items-center gap-2 shrink-0">
+                    <div class="flex items-center space-x-2">
+                        <span class="bg-sky-600 text-white text-xs font-extrabold px-2.5 py-1 rounded-lg">
+                            Q.<span id="curr-q-num">1</span>/<span id="total-q-num">1</span>
+                        </span>
+                        <span id="q-type-badge" class="bg-sky-100 text-sky-800 text-[11px] font-bold px-2 py-0.5 rounded-md truncate max-w-[140px] sm:max-w-none"></span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-xs">
+                        <button type="button" onclick="openSummaryModal()" class="text-sky-700 bg-sky-50 border border-sky-200 px-2.5 py-1 rounded-md font-bold touch-manipulation">
+                            Summary
+                        </button>
+                        <button type="button" onclick="resetEntireChapter()" class="text-slate-500 hover:text-red-600 underline font-semibold touch-manipulation">
+                            Reset
+                        </button>
+                    </div>
+                </div>
+
+                <div id="question-scroll-area" class="flex-1 overflow-y-auto p-3 sm:p-6 custom-scrollbar">
+                    <div id="single-question-container" class="max-w-4xl mx-auto pb-4"></div>
+                </div>
+
+                <!-- Thumb-Friendly Bottom Action Bar -->
+                <div class="bg-white border-t border-slate-200 px-2.5 sm:px-6 py-2.5 flex items-center justify-between gap-1.5 sm:gap-2 shrink-0 z-10">
+                    <div class="flex items-center space-x-1.5 sm:space-x-2">
+                        <button type="button" id="btn-prev" onclick="prevQuestion()" class="px-2.5 sm:px-4 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs sm:text-sm font-bold disabled:opacity-40 touch-manipulation">
+                            ← Prev
+                        </button>
+                        <button type="button" id="btn-mark-next" onclick="markForReviewAndNext()" class="px-2.5 sm:px-3.5 py-2.5 rounded-xl border border-purple-300 bg-purple-50 text-purple-800 text-xs sm:text-sm font-bold touch-manipulation">
+                            Mark
+                        </button>
+                        <button type="button" id="btn-clear" onclick="clearCurrentResponse()" class="px-2.5 sm:px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-600 text-xs sm:text-sm font-bold touch-manipulation">
+                            Clear
+                        </button>
+                    </div>
+
+                    <button type="button" id="btn-save-next" onclick="saveAndNext()" class="px-4 sm:px-6 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs sm:text-sm font-extrabold transition flex items-center space-x-1.5 shrink-0 touch-manipulation">
+                        <span id="btn-save-next-label">Save & Next</span>
+                        <span>→</span>
+                    </button>
+                </div>
+            </main>
+
+            <!-- Question Palette Panel -->
+            <aside id="side-panel" class="w-full md:w-80 lg:w-96 bg-slate-50 flex flex-col shrink-0 border-t md:border-t-0 md:border-l border-slate-200 max-h-60 md:max-h-none">
+                <div class="p-3 bg-white border-b border-slate-200">
+                    <div class="grid grid-cols-2 gap-1.5 text-[11px] font-medium">
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-4 h-4 rounded bg-emerald-600 text-white flex items-center justify-center text-[9px] font-bold">✓</span>
+                            <span>Right (<strong id="legend-correct">0</strong>)</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-4 h-4 rounded bg-red-600 text-white flex items-center justify-center text-[9px] font-bold">✕</span>
+                            <span>Wrong (<strong id="legend-incorrect">0</strong>)</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-4 h-4 rounded-full bg-purple-600 text-white flex items-center justify-center text-[9px] font-bold">★</span>
+                            <span>Marked (<strong id="legend-marked">0</strong>)</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-4 h-4 rounded bg-slate-200 text-slate-600 flex items-center justify-center text-[9px] font-bold">•</span>
+                            <span>Left (<strong id="legend-unattempted">0</strong>)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="px-3.5 py-1.5 bg-sky-900 text-white text-xs font-bold flex justify-between items-center">
+                    <span>Question Palette</span>
+                    <span id="palette-count-label" class="text-sky-200"></span>
+                </div>
+
+                <div class="flex-1 overflow-y-auto p-3 custom-scrollbar bg-white">
+                    <div id="palette-grid" class="grid grid-cols-6 gap-2"></div>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <!-- Scorecard Modal -->
+    <div id="summary-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full border border-slate-200 shadow-2xl overflow-hidden">
+            <div class="bg-sky-900 text-white px-5 py-3.5 flex items-center justify-between">
+                <h3 class="font-extrabold text-base" id="modal-chapter-title">Summary</h3>
+                <button type="button" onclick="closeSummaryModal()" class="text-sky-200 hover:text-white font-bold px-2">✕</button>
+            </div>
+            <div class="p-5 space-y-4">
+                <div class="grid grid-cols-2 gap-2.5 text-center">
+                    <div class="bg-sky-50 border border-sky-200 rounded-xl p-2.5">
+                        <span class="text-[10px] font-bold text-sky-700 uppercase block">Score</span>
+                        <span id="modal-score" class="text-lg font-extrabold text-sky-900">0.0</span>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-2.5">
+                        <span class="text-[10px] font-bold text-amber-800 uppercase block">Accuracy</span>
+                        <span id="modal-accuracy" class="text-lg font-extrabold text-amber-900">0%</span>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-2.5">
+                        <span class="text-[10px] font-bold text-emerald-700 uppercase block">Correct</span>
+                        <span id="modal-correct" class="text-lg font-extrabold text-emerald-700">0</span>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 rounded-xl p-2.5">
+                        <span class="text-[10px] font-bold text-red-700 uppercase block">Incorrect</span>
+                        <span id="modal-incorrect" class="text-lg font-extrabold text-red-700">0</span>
+                    </div>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-xs text-slate-600 space-y-1">
+                    <div class="flex justify-between"><span>Total Questions:</span><strong id="modal-total-q">0</strong></div>
+                    <div class="flex justify-between"><span>Attempted:</span><strong id="modal-attempted">0</strong></div>
+                    <div class="flex justify-between"><span>Marked:</span><strong id="modal-marked">0</strong></div>
+                    <div class="flex justify-between"><span>Unattempted:</span><strong id="modal-unattempted">0</strong></div>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="closeSummaryModal()" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 text-xs sm:text-sm font-bold">Keep Practicing</button>
+                    <button type="button" onclick="closeSummaryModal(); navigateTo('chapters');" class="px-4 py-2 rounded-xl bg-sky-600 text-white text-xs sm:text-sm font-bold">Chapters</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast-box" class="fixed bottom-16 md:bottom-5 right-4 z-50 hidden bg-slate-900 text-white text-xs sm:text-sm font-medium px-4 py-2.5 rounded-xl shadow-lg max-w-xs">
+        <span id="toast-message"></span>
+    </div>
+
+    <script src="data/questions.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
