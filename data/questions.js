@@ -842,6 +842,10 @@ const svaQuestions = [
     }
 ];
 
+const historyQuestions = [];
+const polityQuestions = [];
+const geographyQuestions = [];
+
 const chaptersData = [
     {
         id: 'pronoun',
