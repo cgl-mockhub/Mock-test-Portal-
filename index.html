@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="dVyhYXRWH13Q0tMnoiuUQcRTQ0ok2TKaDXmr0_-BOyA" />
-    <meta name="description" content="Free SSC CGL Chapter-Wise CBT Mock Test Portal with instant 4-part solutions, grammar rules, distractor traps, and 10-second exam shortcuts." />
-    <title>SSC CGL CBT Mock Test Portal — Chapter-Wise Practice</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230284c7'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold' font-size='26'%3ECGL%3C/text%3E%3C/svg%3E">
+    <meta name="description" content="Free SSC CGL Chapter-Wise & Topic-Wise CBT Mock Test Portal with instant 4-part solutions, NCERT/grammar rules, distractor traps, and 10-second exam shortcuts." />
+    <title>SSC CGL CBT Mock Test Portal — Chapter & Topic-Wise Practice</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230284c7'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold' font-size='26'%3ECGL%3C/text%3E%3C/svg%3E">
     <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230284c7'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold' font-size='72'%3ECGL%3C/text%3E%3C/svg%3E">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -16,6 +16,8 @@
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .card-hover { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
         .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -8px rgba(15, 23, 42, 0.12); }
         .question-box, .question-text, .question-wrap {
@@ -40,7 +42,7 @@
                 </div>
                 <div class="truncate">
                     <span class="font-extrabold text-base sm:text-xl tracking-tight text-slate-900">SSC CGL CBT Portal</span>
-                    <p class="text-[11px] text-slate-500 hidden sm:block">Mobile & Desktop Practice • +2.0 / -0.50 Marking</p>
+                    <p class="text-[11px] text-slate-500 hidden sm:block">Chapter & Sub-Category Practice • +2.0 / -0.50 Marking</p>
                 </div>
             </div>
 
@@ -56,14 +58,14 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
                 <div class="max-w-3xl space-y-2.5">
                     <span class="inline-flex items-center space-x-1.5 bg-white/15 text-sky-100 text-[11px] sm:text-xs font-semibold px-3 py-1 rounded-full">
-                        <i class="fa-solid fa-mobile-screen-button text-amber-300"></i>
-                        <span>Phone & Laptop Ready • Auto-Saved Progress</span>
+                        <i class="fa-solid fa-layer-group text-amber-300"></i>
+                        <span>200+ PYQ & NCERT Questions • Sub-Category Filters</span>
                     </span>
                     <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
                         SSC CGL Chapter-Wise Practice Hub
                     </h1>
                     <p class="text-sky-100 text-xs sm:text-base leading-relaxed">
-                        Practice one question at a time with instant rule breakdowns, distractor traps, and 10-second exam shortcuts.
+                        Practice chapter-by-chapter or filter by specific sub-topics with instant rule breakdowns, distractor traps, and 10-second exam shortcuts.
                     </p>
                 </div>
             </div>
@@ -74,15 +76,36 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 <div onclick="navigateTo('chapters', 'english')" class="card-hover cursor-pointer bg-white rounded-2xl border-2 border-sky-500 p-5 sm:p-6 flex flex-col justify-between shadow-xs touch-manipulation">
                     <div>
-                        <div class="w-11 h-11 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center mb-3.5">
-                            <i class="fa-solid fa-language text-xl"></i>
+                        <div class="flex items-center justify-between mb-3.5">
+                            <div class="w-11 h-11 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center">
+                                <i class="fa-solid fa-language text-xl"></i>
+                            </div>
+                            <span class="text-[11px] font-bold bg-sky-50 text-sky-700 px-2.5 py-1 rounded-full">50+ Qs Active</span>
                         </div>
                         <h3 class="font-bold text-base sm:text-lg text-slate-900">English Language</h3>
                         <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">
-                            Pronoun bank, Noun & Number, and Subject-Verb Agreement drills.
+                            Pronouns (5 Topic Sets), Noun & Number, and Subject-Verb Agreement drills.
                         </p>
                     </div>
                     <button type="button" class="mt-5 w-full bg-sky-600 hover:bg-sky-700 text-white font-semibold text-xs sm:text-sm py-2.5 rounded-xl transition">
+                        Explore Chapters →
+                    </button>
+                </div>
+
+                <div onclick="navigateTo('chapters', 'gs')" class="card-hover cursor-pointer bg-white rounded-2xl border-2 border-emerald-500 p-5 sm:p-6 flex flex-col justify-between shadow-xs touch-manipulation">
+                    <div>
+                        <div class="flex items-center justify-between mb-3.5">
+                            <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                                <i class="fa-solid fa-globe-asia text-lg"></i>
+                            </div>
+                            <span class="text-[11px] font-bold bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full">150 Qs Active</span>
+                        </div>
+                        <h3 class="font-bold text-base sm:text-lg text-slate-900">General Awareness</h3>
+                        <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">
+                            NCERT Class VI–XII History (50 Qs), Geography (50 Qs) & Polity (50 Qs) with chapter filters.
+                        </p>
+                    </div>
+                    <button type="button" class="mt-5 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs sm:text-sm py-2.5 rounded-xl transition">
                         Explore Chapters →
                     </button>
                 </div>
@@ -108,19 +131,6 @@
                     </div>
                     <span class="mt-5 block text-center bg-slate-100 text-slate-500 font-semibold text-xs py-2.5 rounded-xl">Coming Soon</span>
                 </div>
-
-                <div onclick="navigateTo('chapters', 'gs')" class="card-hover cursor-pointer bg-white rounded-2xl border-2 border-emerald-500 p-5 sm:p-6 flex flex-col justify-between shadow-xs touch-manipulation">
-                    <div>
-                        <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-3.5">
-                            <i class="fa-solid fa-globe-asia text-lg"></i>
-                        </div>
-                        <h3 class="font-bold text-base sm:text-lg text-slate-900">General Awareness</h3>
-                        <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Polity, History, Geography, Science & GK.</p>
-                    </div>
-                    <button type="button" class="mt-5 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs sm:text-sm py-2.5 rounded-xl transition">
-                        Explore Chapters →
-                    </button>
-                </div>
             </div>
         </div>
     </section>
@@ -132,12 +142,12 @@
                 <button type="button" onclick="navigateTo('home')" class="text-xs sm:text-sm font-bold text-sky-600 hover:underline touch-manipulation">
                     ← All Subjects
                 </button>
-                <span class="text-xs font-semibold text-slate-600">+2.0 / -0.50</span>
+                <span class="text-xs font-semibold text-slate-600">+2.0 / -0.50 Marking</span>
             </div>
 
             <div>
                 <h1 id="chapters-heading" class="text-xl sm:text-2xl font-extrabold text-slate-900">English Language Chapters</h1>
-                <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Tap a chapter to start or resume CBT practice</p>
+                <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Select a chapter or jump straight into a sub-category module</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5" id="chapters-grid"></div>
@@ -177,6 +187,9 @@
             </div>
         </header>
 
+        <!-- Sub-Category Filter Strip -->
+        <div id="subcategory-bar" class="hidden bg-white border-b border-slate-200 px-3 sm:px-6 py-2 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0 z-10"></div>
+
         <!-- Full Screen Focus Bar -->
         <div id="fullscreen-floating-bar" class="hidden bg-slate-900 text-white px-3.5 py-2 flex justify-between items-center text-xs shrink-0 z-30">
             <div class="flex items-center space-x-2.5">
@@ -192,13 +205,13 @@
         <div class="flex-1 flex flex-col md:flex-row overflow-hidden relative">
             <main id="question-panel" class="flex-1 flex flex-col bg-slate-100/70 md:border-r border-slate-200 overflow-hidden">
                 <div class="bg-white border-b border-slate-200 px-3 sm:px-6 py-2 flex justify-between items-center gap-2 shrink-0">
-                    <div class="flex items-center space-x-2">
-                        <span class="bg-sky-600 text-white text-xs font-extrabold px-2.5 py-1 rounded-lg">
+                    <div class="flex items-center space-x-2 min-w-0">
+                        <span class="bg-sky-600 text-white text-xs font-extrabold px-2.5 py-1 rounded-lg shrink-0">
                             Q.<span id="curr-q-num">1</span>/<span id="total-q-num">1</span>
                         </span>
-                        <span id="q-type-badge" class="bg-sky-100 text-sky-800 text-[11px] font-bold px-2 py-0.5 rounded-md truncate max-w-[140px] sm:max-w-none"></span>
+                        <span id="q-type-badge" class="bg-sky-100 text-sky-800 text-[11px] font-bold px-2 py-0.5 rounded-md truncate max-w-[160px] sm:max-w-none"></span>
                     </div>
-                    <div class="flex items-center space-x-2 text-xs">
+                    <div class="flex items-center space-x-2 text-xs shrink-0">
                         <button type="button" onclick="openSummaryModal()" class="text-sky-700 bg-sky-50 border border-sky-200 px-2.5 py-1 rounded-md font-bold touch-manipulation">
                             Summary
                         </button>
