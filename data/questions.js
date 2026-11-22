@@ -882,5 +882,38 @@ const chaptersData = [
         questions: [],
         active: false,
         description: 'Conditional sentences, Sequence of Tenses, Causative verbs, and Stative vs Dynamic verbs.'
+    },
+    {
+        id: 'history',
+        subject: 'gs',
+        title: 'History',
+        subtitle: 'General Awareness',
+        tag: 'Active Set',
+        tagColor: 'bg-amber-100 text-amber-800',
+        questions: historyQuestions,
+        active: true,
+        description: 'Ancient, Medieval & Modern History chapter practice.'
+    },
+    {
+        id: 'polity',
+        subject: 'gs',
+        title: 'Polity',
+        subtitle: 'General Awareness',
+        tag: 'Active Set',
+        tagColor: 'bg-amber-100 text-amber-800',
+        questions: polityQuestions,
+        active: true,
+        description: 'Indian Constitution, Articles, Amendments & Governance.'
+    },
+    {
+        id: 'geography',
+        subject: 'gs',
+        title: 'Geography',
+        subtitle: 'General Awareness',
+        tag: 'Active Set',
+        tagColor: 'bg-amber-100 text-amber-800',
+        questions: geographyQuestions,
+        active: true,
+        description: 'Indian & World Geography chapter practice.'
     }
 ];
