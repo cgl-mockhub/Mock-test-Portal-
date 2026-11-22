@@ -1,11 +1,12 @@
 // js/app.js
-const STORAGE_KEY = 'ssc_cgl_portal_progress_v1';
+const STORAGE_KEY = 'ssc_cgl_portal_progress_v2';
 
 let currentSubject = 'english';
 let currentChapter = chaptersData[0];
-let activeQuestions = pronounQuestions;
-let currentQuestionIndex = 0;
-let isSidePanelVisible = window.innerWidth >= 768; // Open on tablet/desktop, clean on small phones
+let activeSubCategory = 'ALL';
+let filteredIndices = [];
+let currentFilteredPos = 0;
+let isSidePanelVisible = window.innerWidth >= 768;
 let isFullScreenMode = false;
 let chapterProgressStore = loadProgressFromStorage();
 
@@ -47,6 +48,18 @@ function getSubjectHeading(subject) {
     if (subject === 'quant') return 'Quantitative Aptitude Chapters';
     if (subject === 'reasoning') return 'Reasoning Chapters';
     return 'English Language Chapters';
+}
+
+function getChapterSubCategories(chapter) {
+    const seen = new Set();
+    const list = [];
+    (chapter.questions || []).forEach(q => {
+        if (q.subCategory && !seen.has(q.subCategory)) {
+            seen.add(q.subCategory);
+            list.push(q.subCategory);
+        }
+    });
+    return list;
 }
 
 function navigateTo(viewName, subjectName) {
@@ -106,17 +119,34 @@ function renderChaptersGrid(subjectName = currentSubject) {
         const state = total > 0 ? getChapterState(chapter.id, total) : null;
         const attempted = state ? state.userAnswers.filter(a => a !== null).length : 0;
         const pct = total > 0 ? Math.round((attempted / total) * 100) : 0;
+        const subCats = getChapterSubCategories(chapter);
 
         const card = document.createElement('div');
         card.className = `card-hover bg-white rounded-2xl border ${chapter.active ? 'border-slate-200 hover:border-sky-400 cursor-pointer' : 'border-slate-200 opacity-85 cursor-pointer'} p-5 sm:p-6 flex flex-col justify-between shadow-2xs touch-manipulation`;
 
-        card.onclick = () => {
+        card.onclick = (e) => {
+            if (e.target.closest('[data-subcat]')) return;
             if (chapter.active && total > 0) {
-                startChapterQuiz(chapter.id);
+                startChapterQuiz(chapter.id, 'ALL');
             } else {
                 showToast(`"${chapter.title}" is coming soon! Try an active chapter to practice.`);
             }
         };
+
+        let subCatChipsHTML = '';
+        if (subCats.length > 0) {
+            subCatChipsHTML = `
+                <div class="mt-3 flex flex-wrap gap-1.5">
+                    ${subCats.map(sc => `
+                        <button type="button" data-subcat="${sc.replace(/"/g, '&quot;')}"
+                            onclick="startChapterQuiz('${chapter.id}', '${sc.replace(/'/g, "\\'")}')"
+                            class="text-[11px] font-semibold bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-800 border border-slate-200 px-2 py-0.5 rounded-md transition">
+                            ${sc}
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+        }
 
         card.innerHTML = `
             <div>
@@ -127,6 +157,7 @@ function renderChaptersGrid(subjectName = currentSubject) {
                 <h3 class="font-extrabold text-lg text-slate-900">${chapter.title}</h3>
                 <p class="text-xs font-semibold text-sky-600 mt-0.5">${chapter.subtitle}</p>
                 <p class="text-xs text-slate-500 mt-2.5 leading-relaxed">${chapter.description}</p>
+                ${subCatChipsHTML}
             </div>
 
             <div class="mt-5 pt-4 border-t border-slate-100">
@@ -136,7 +167,7 @@ function renderChaptersGrid(subjectName = currentSubject) {
                     </div>
                     <button type="button" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs sm:text-sm py-3 rounded-xl transition flex items-center justify-center space-x-2">
                         <i class="fa-solid fa-play text-xs"></i>
-                        <span>${attempted > 0 ? 'Resume CBT Practice' : 'Start CBT Practice'}</span>
+                        <span>${attempted > 0 ? 'Resume All Questions' : 'Start Practice'} (${total} Qs)</span>
                     </button>
                 ` : `
                     <button type="button" class="w-full bg-slate-100 text-slate-500 font-semibold text-xs sm:text-sm py-3 rounded-xl">
@@ -149,25 +180,97 @@ function renderChaptersGrid(subjectName = currentSubject) {
     });
 }
 
-function startChapterQuiz(chapterId) {
+function buildFilteredIndices(chapter, subCategory) {
+    const indices = [];
+    chapter.questions.forEach((q, idx) => {
+        if (subCategory === 'ALL' || q.subCategory === subCategory) {
+            indices.push(idx);
+        }
+    });
+    return indices.length > 0 ? indices : chapter.questions.map((_, idx) => idx);
+}
+
+function renderSubCategoryBar() {
+    const bar = document.getElementById('subcategory-bar');
+    const subCats = getChapterSubCategories(currentChapter);
+
+    if (subCats.length === 0) {
+        bar.classList.add('hidden');
+        bar.innerHTML = '';
+        return;
+    }
+
+    bar.classList.remove('hidden');
+    const allCount = currentChapter.questions.length;
+
+    let html = `
+        <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mr-1 shrink-0">Topic:</span>
+        <button type="button" onclick="switchSubCategory('ALL')"
+            class="px-2.5 py-1 rounded-lg text-xs font-bold shrink-0 transition touch-manipulation ${activeSubCategory === 'ALL' ? 'bg-sky-600 text-white shadow-2xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">
+            All (${allCount})
+        </button>
+    `;
+
+    subCats.forEach(sc => {
+        const count = currentChapter.questions.filter(q => q.subCategory === sc).length;
+        const isSelected = activeSubCategory === sc;
+        html += `
+            <button type="button" onclick="switchSubCategory('${sc.replace(/'/g, "\\'")}')"
+                class="px-2.5 py-1 rounded-lg text-xs font-bold shrink-0 transition touch-manipulation ${isSelected ? 'bg-sky-600 text-white shadow-2xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">
+                ${sc} (${count})
+            </button>
+        `;
+    });
+
+    bar.innerHTML = html;
+}
+
+function switchSubCategory(subCategory) {
+    activeSubCategory = subCategory;
+    filteredIndices = buildFilteredIndices(currentChapter, activeSubCategory);
+
+    const state = getChapterState(currentChapter.id, currentChapter.questions.length);
+    const firstUnansweredPos = filteredIndices.findIndex(realIdx => state.userAnswers[realIdx] === null);
+    currentFilteredPos = firstUnansweredPos >= 0 ? firstUnansweredPos : 0;
+
+    const realIdx = filteredIndices[currentFilteredPos];
+    state.visited[realIdx] = true;
+    saveProgressToStorage();
+
+    updateQuizHeaderLabels();
+    renderSubCategoryBar();
+    renderCurrentQuestion();
+    updateStatsAndPalette();
+}
+
+function updateQuizHeaderLabels() {
+    const count = filteredIndices.length;
+    const scopeLabel = activeSubCategory === 'ALL' ? currentChapter.title : `${currentChapter.title} • ${activeSubCategory}`;
+    document.getElementById('quiz-breadcrumb-chapter').textContent = `${scopeLabel} (${count} Qs)`;
+    document.getElementById('quiz-mobile-title').textContent = `${scopeLabel} (${count})`;
+    document.getElementById('total-q-num').textContent = count;
+    document.getElementById('fs-q-total').textContent = count;
+    document.getElementById('palette-count-label').textContent = `1 – ${count}`;
+}
+
+function startChapterQuiz(chapterId, subCategory = 'ALL') {
     const found = chaptersData.find(c => c.id === chapterId);
     if (!found || found.questions.length === 0) return;
 
     currentChapter = found;
-    activeQuestions = found.questions;
+    activeSubCategory = subCategory;
+    filteredIndices = buildFilteredIndices(currentChapter, activeSubCategory);
 
-    const state = getChapterState(currentChapter.id, activeQuestions.length);
-    const firstUnanswered = state.userAnswers.findIndex(a => a === null);
-    currentQuestionIndex = firstUnanswered > 0 ? firstUnanswered : 0;
-    state.visited[currentQuestionIndex] = true;
+    const state = getChapterState(currentChapter.id, currentChapter.questions.length);
+    const firstUnansweredPos = filteredIndices.findIndex(realIdx => state.userAnswers[realIdx] === null);
+    currentFilteredPos = firstUnansweredPos >= 0 ? firstUnansweredPos : 0;
+
+    const realIdx = filteredIndices[currentFilteredPos];
+    state.visited[realIdx] = true;
     saveProgressToStorage();
 
-    document.getElementById('quiz-breadcrumb-chapter').textContent = `${currentChapter.title} (${activeQuestions.length} Qs)`;
-    document.getElementById('quiz-mobile-title').textContent = `${currentChapter.title} (${activeQuestions.length})`;
-    document.getElementById('total-q-num').textContent = activeQuestions.length;
-    document.getElementById('fs-q-total').textContent = activeQuestions.length;
-    document.getElementById('palette-count-label').textContent = `1 – ${activeQuestions.length}`;
-
+    updateQuizHeaderLabels();
+    renderSubCategoryBar();
     applySidePanelState();
     navigateTo('quiz');
     renderCurrentQuestion();
@@ -175,22 +278,24 @@ function startChapterQuiz(chapterId) {
 }
 
 function renderCurrentQuestion() {
-    const q = activeQuestions[currentQuestionIndex];
-    const state = getChapterState(currentChapter.id, activeQuestions.length);
-    state.visited[currentQuestionIndex] = true;
+    const realIdx = filteredIndices[currentFilteredPos];
+    const q = currentChapter.questions[realIdx];
+    const state = getChapterState(currentChapter.id, currentChapter.questions.length);
+    state.visited[realIdx] = true;
     saveProgressToStorage();
 
-    const userAnswer = state.userAnswers[currentQuestionIndex];
-    const isMarked = state.markedForReview[currentQuestionIndex];
+    const userAnswer = state.userAnswers[realIdx];
+    const isMarked = state.markedForReview[realIdx];
     const isAnswered = userAnswer !== null;
+    const isGS = getChapterSubject(currentChapter) === 'gs';
 
-    document.getElementById('curr-q-num').textContent = currentQuestionIndex + 1;
-    document.getElementById('fs-q-curr').textContent = currentQuestionIndex + 1;
-    document.getElementById('q-type-badge').textContent = q.type;
-    document.getElementById('btn-prev').disabled = currentQuestionIndex === 0;
+    document.getElementById('curr-q-num').textContent = currentFilteredPos + 1;
+    document.getElementById('fs-q-curr').textContent = currentFilteredPos + 1;
+    document.getElementById('q-type-badge').textContent = q.subCategory ? `${q.type} • ${q.subCategory}` : q.type;
+    document.getElementById('btn-prev').disabled = currentFilteredPos === 0;
 
     const saveNextLabel = document.getElementById('btn-save-next-label');
-    saveNextLabel.textContent = currentQuestionIndex === activeQuestions.length - 1
+    saveNextLabel.textContent = currentFilteredPos === filteredIndices.length - 1
         ? 'Scorecard'
         : (isAnswered ? 'Next' : 'Save & Next');
 
@@ -233,6 +338,9 @@ function renderCurrentQuestion() {
             ? `Correct (+2.0) — (${q.correctOption.toUpperCase()})`
             : `Incorrect (-0.50) — You: (${userAnswer.toUpperCase()}), Ans: (${q.correctOption.toUpperCase()})`;
 
+        const part1Label = isGS ? '1. Correct Answer' : '1. Corrected Sentence';
+        const part2Label = isGS ? '2. NCERT Rule & Fact' : '2. Grammar Rule';
+
         solutionHTML = `
             <div class="mt-5 rounded-2xl border-2 ${isUserRight ? 'border-emerald-200' : 'border-amber-200'} bg-white shadow-xs overflow-hidden">
                 <div class="${bannerBg} text-white px-4 py-2.5 flex items-center justify-between gap-2">
@@ -241,11 +349,11 @@ function renderCurrentQuestion() {
                 </div>
                 <div class="p-4 space-y-3 text-xs sm:text-sm">
                     <div class="bg-emerald-50/80 border border-emerald-200 rounded-xl p-3">
-                        <div class="text-[11px] font-extrabold text-emerald-800 uppercase mb-1">1. Corrected Sentence</div>
+                        <div class="text-[11px] font-extrabold text-emerald-800 uppercase mb-1">${part1Label}</div>
                         <p class="font-semibold text-slate-900 leading-relaxed question-wrap">${q.correctedSentence}</p>
                     </div>
                     <div class="bg-sky-50/80 border border-sky-200 rounded-xl p-3">
-                        <div class="text-[11px] font-extrabold text-sky-800 uppercase mb-1">2. Grammar Rule</div>
+                        <div class="text-[11px] font-extrabold text-sky-800 uppercase mb-1">${part2Label}</div>
                         <p class="text-slate-700 leading-relaxed question-wrap">${q.rule}</p>
                     </div>
                     <div class="bg-rose-50/80 border border-rose-200 rounded-xl p-3">
@@ -264,10 +372,10 @@ function renderCurrentQuestion() {
     document.getElementById('single-question-container').innerHTML = `
         <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-4 sm:p-7">
             <div class="flex items-center justify-between gap-2 pb-3 mb-4 border-b border-slate-100">
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                    ${currentChapter.title} • Q.${currentQuestionIndex + 1}
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider truncate">
+                    ${currentChapter.title}${q.subCategory ? ` • ${q.subCategory}` : ''} • Q.${currentFilteredPos + 1}
                 </span>
-                <button type="button" onclick="toggleMarkCurrent()" class="text-xs font-bold px-3 py-1.5 rounded-lg border transition flex items-center gap-1.5 touch-manipulation ${isMarked ? 'bg-purple-600 text-white border-purple-600' : 'bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100'}">
+                <button type="button" onclick="toggleMarkCurrent()" class="text-xs font-bold px-3 py-1.5 rounded-lg border transition flex items-center gap-1.5 shrink-0 touch-manipulation ${isMarked ? 'bg-purple-600 text-white border-purple-600' : 'bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100'}">
                     <i class="fa-solid fa-bookmark"></i>
                     <span>${isMarked ? 'Marked' : 'Mark'}</span>
                 </button>
@@ -285,25 +393,26 @@ function renderCurrentQuestion() {
 }
 
 function selectOption(optionKey) {
-    const state = getChapterState(currentChapter.id, activeQuestions.length);
-    if (state.userAnswers[currentQuestionIndex] !== null) return;
-    state.userAnswers[currentQuestionIndex] = optionKey;
+    const realIdx = filteredIndices[currentFilteredPos];
+    const state = getChapterState(currentChapter.id, currentChapter.questions.length);
+    if (state.userAnswers[realIdx] !== null) return;
+    state.userAnswers[realIdx] = optionKey;
     saveProgressToStorage();
     renderCurrentQuestion();
     updateStatsAndPalette();
 }
 
 function prevQuestion() {
-    if (currentQuestionIndex > 0) {
-        currentQuestionIndex--;
+    if (currentFilteredPos > 0) {
+        currentFilteredPos--;
         renderCurrentQuestion();
         updateStatsAndPalette();
     }
 }
 
 function saveAndNext() {
-    if (currentQuestionIndex < activeQuestions.length - 1) {
-        currentQuestionIndex++;
+    if (currentFilteredPos < filteredIndices.length - 1) {
+        currentFilteredPos++;
         renderCurrentQuestion();
         updateStatsAndPalette();
     } else {
@@ -312,11 +421,12 @@ function saveAndNext() {
 }
 
 function markForReviewAndNext() {
-    const state = getChapterState(currentChapter.id, activeQuestions.length);
-    state.markedForReview[currentQuestionIndex] = true;
+    const realIdx = filteredIndices[currentFilteredPos];
+    const state = getChapterState(currentChapter.id, currentChapter.questions.length);
+    state.markedForReview[realIdx] = true;
     saveProgressToStorage();
-    if (currentQuestionIndex < activeQuestions.length - 1) {
-        currentQuestionIndex++;
+    if (currentFilteredPos < filteredIndices.length - 1) {
+        currentFilteredPos++;
     } else {
         showToast('Marked the final question for review!');
     }
@@ -325,30 +435,32 @@ function markForReviewAndNext() {
 }
 
 function toggleMarkCurrent() {
-    const state = getChapterState(currentChapter.id, activeQuestions.length);
-    state.markedForReview[currentQuestionIndex] = !state.markedForReview[currentQuestionIndex];
+    const realIdx = filteredIndices[currentFilteredPos];
+    const state = getChapterState(currentChapter.id, currentChapter.questions.length);
+    state.markedForReview[realIdx] = !state.markedForReview[realIdx];
     saveProgressToStorage();
     renderCurrentQuestion();
     updateStatsAndPalette();
 }
 
 function clearCurrentResponse() {
-    const state = getChapterState(currentChapter.id, activeQuestions.length);
-    if (state.userAnswers[currentQuestionIndex] === null && !state.markedForReview[currentQuestionIndex]) {
+    const realIdx = filteredIndices[currentFilteredPos];
+    const state = getChapterState(currentChapter.id, currentChapter.questions.length);
+    if (state.userAnswers[realIdx] === null && !state.markedForReview[realIdx]) {
         showToast('Nothing to clear on this question.');
         return;
     }
-    state.userAnswers[currentQuestionIndex] = null;
-    state.markedForReview[currentQuestionIndex] = false;
+    state.userAnswers[realIdx] = null;
+    state.markedForReview[realIdx] = false;
     saveProgressToStorage();
     renderCurrentQuestion();
     updateStatsAndPalette();
-    showToast(`Cleared Question ${currentQuestionIndex + 1}.`);
+    showToast(`Cleared Question ${currentFilteredPos + 1}.`);
 }
 
-function jumpToQuestion(index) {
-    if (index >= 0 && index < activeQuestions.length) {
-        currentQuestionIndex = index;
+function jumpToQuestion(filteredPos) {
+    if (filteredPos >= 0 && filteredPos < filteredIndices.length) {
+        currentFilteredPos = filteredPos;
         if (window.innerWidth < 768 && isSidePanelVisible) {
             isSidePanelVisible = false;
             applySidePanelState();
@@ -359,35 +471,38 @@ function jumpToQuestion(index) {
 }
 
 function resetEntireChapter() {
-    chapterProgressStore[currentChapter.id] = {
-        userAnswers: new Array(activeQuestions.length).fill(null),
-        markedForReview: new Array(activeQuestions.length).fill(false),
-        visited: new Array(activeQuestions.length).fill(false)
-    };
+    const state = getChapterState(currentChapter.id, currentChapter.questions.length);
+    filteredIndices.forEach(realIdx => {
+        state.userAnswers[realIdx] = null;
+        state.markedForReview[realIdx] = false;
+        state.visited[realIdx] = false;
+    });
     saveProgressToStorage();
-    currentQuestionIndex = 0;
+    currentFilteredPos = 0;
     renderCurrentQuestion();
     updateStatsAndPalette();
-    showToast(`Reset progress for ${currentChapter.title}.`);
+    const label = activeSubCategory === 'ALL' ? currentChapter.title : `${currentChapter.title} (${activeSubCategory})`;
+    showToast(`Reset progress for ${label}.`);
 }
 
 function updateStatsAndPalette() {
-    const total = activeQuestions.length;
-    const state = getChapterState(currentChapter.id, total);
+    const total = filteredIndices.length;
+    const state = getChapterState(currentChapter.id, currentChapter.questions.length);
 
     let correctCount = 0;
     let incorrectCount = 0;
     let markedCount = 0;
     let visitedCount = 0;
 
-    activeQuestions.forEach((q, idx) => {
-        const ans = state.userAnswers[idx];
+    filteredIndices.forEach((realIdx) => {
+        const q = currentChapter.questions[realIdx];
+        const ans = state.userAnswers[realIdx];
         if (ans !== null) {
             if (ans === q.correctOption) correctCount++;
             else incorrectCount++;
         }
-        if (state.markedForReview[idx]) markedCount++;
-        if (state.visited[idx]) visitedCount++;
+        if (state.markedForReview[realIdx]) markedCount++;
+        if (state.visited[realIdx]) visitedCount++;
     });
 
     const attempted = correctCount + incorrectCount;
@@ -409,10 +524,11 @@ function updateStatsAndPalette() {
     const paletteGrid = document.getElementById('palette-grid');
     paletteGrid.innerHTML = '';
 
-    activeQuestions.forEach((q, idx) => {
-        const ans = state.userAnswers[idx];
-        const isMarked = state.markedForReview[idx];
-        const isActive = idx === currentQuestionIndex;
+    filteredIndices.forEach((realIdx, pos) => {
+        const q = currentChapter.questions[realIdx];
+        const ans = state.userAnswers[realIdx];
+        const isMarked = state.markedForReview[realIdx];
+        const isActive = pos === currentFilteredPos;
 
         let btnClasses = 'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200';
         if (ans !== null) {
@@ -421,7 +537,7 @@ function updateStatsAndPalette() {
                 : 'bg-red-600 text-white border-red-700';
         } else if (isMarked) {
             btnClasses = 'bg-purple-600 text-white border-purple-700 rounded-full';
-        } else if (state.visited[idx]) {
+        } else if (state.visited[realIdx]) {
             btnClasses = 'bg-amber-100 text-amber-900 border-amber-300';
         }
 
@@ -429,12 +545,12 @@ function updateStatsAndPalette() {
 
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.textContent = idx + 1;
-        btn.onclick = () => jumpToQuestion(idx);
+        btn.textContent = pos + 1;
+        btn.onclick = () => jumpToQuestion(pos);
         btn.className = `h-9 w-full rounded-lg border text-xs font-bold transition flex items-center justify-center relative touch-manipulation ${btnClasses} ${activeRing}`;
 
         if (isMarked && ans !== null) {
-            btn.innerHTML = `${idx + 1}<span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-purple-500 border border-white rounded-full"></span>`;
+            btn.innerHTML = `${pos + 1}<span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-purple-500 border border-white rounded-full"></span>`;
         }
 
         paletteGrid.appendChild(btn);
@@ -442,27 +558,29 @@ function updateStatsAndPalette() {
 }
 
 function openSummaryModal() {
-    const total = activeQuestions.length;
-    const state = getChapterState(currentChapter.id, total);
+    const total = filteredIndices.length;
+    const state = getChapterState(currentChapter.id, currentChapter.questions.length);
 
     let correctCount = 0;
     let incorrectCount = 0;
     let markedCount = 0;
 
-    activeQuestions.forEach((q, idx) => {
-        const ans = state.userAnswers[idx];
+    filteredIndices.forEach((realIdx) => {
+        const q = currentChapter.questions[realIdx];
+        const ans = state.userAnswers[realIdx];
         if (ans !== null) {
             if (ans === q.correctOption) correctCount++;
             else incorrectCount++;
         }
-        if (state.markedForReview[idx]) markedCount++;
+        if (state.markedForReview[realIdx]) markedCount++;
     });
 
     const attempted = correctCount + incorrectCount;
     const score = (correctCount * 2.0) - (incorrectCount * 0.5);
     const accuracy = attempted > 0 ? Math.round((correctCount / attempted) * 100) : 0;
+    const titlePrefix = activeSubCategory === 'ALL' ? currentChapter.title : `${currentChapter.title} (${activeSubCategory})`;
 
-    document.getElementById('modal-chapter-title').textContent = `${currentChapter.title} Summary`;
+    document.getElementById('modal-chapter-title').textContent = `${titlePrefix} Summary`;
     document.getElementById('modal-score').textContent = score.toFixed(1);
     document.getElementById('modal-correct').textContent = correctCount;
     document.getElementById('modal-incorrect').textContent = incorrectCount;
@@ -503,12 +621,14 @@ function toggleSidePanel() {
 function toggleFullScreenQuestion() {
     const quizHeader = document.getElementById('quiz-header');
     const sidePanel = document.getElementById('side-panel');
+    const subBar = document.getElementById('subcategory-bar');
     const floatingBar = document.getElementById('fullscreen-floating-bar');
 
     isFullScreenMode = !isFullScreenMode;
     if (isFullScreenMode) {
         quizHeader.classList.add('hidden');
         sidePanel.classList.add('hidden');
+        subBar.classList.add('hidden');
         floatingBar.classList.remove('hidden');
     } else {
         exitFullScreenSilently();
@@ -519,6 +639,9 @@ function exitFullScreenSilently() {
     isFullScreenMode = false;
     document.getElementById('quiz-header').classList.remove('hidden');
     document.getElementById('fullscreen-floating-bar').classList.add('hidden');
+    if (getChapterSubCategories(currentChapter).length > 0) {
+        document.getElementById('subcategory-bar').classList.remove('hidden');
+    }
     applySidePanelState();
 }
 
@@ -547,7 +670,8 @@ document.addEventListener('keydown', (e) => {
     else {
         const keyMap = { 'a': 'a', '1': 'a', 'b': 'b', '2': 'b', 'c': 'c', '3': 'c', 'd': 'd', '4': 'd' };
         const mapped = keyMap[e.key.toLowerCase()];
-        if (mapped && activeQuestions[currentQuestionIndex].options[mapped]) {
+        const realIdx = filteredIndices[currentFilteredPos];
+        if (mapped && currentChapter.questions[realIdx].options[mapped]) {
             selectOption(mapped);
         }
     }
