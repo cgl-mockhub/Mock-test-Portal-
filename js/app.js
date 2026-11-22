@@ -1,6 +1,7 @@
 // js/app.js
 const STORAGE_KEY = 'ssc_cgl_portal_progress_v1';
 
+let currentSubject = 'english';
 let currentChapter = chaptersData[0];
 let activeQuestions = pronounQuestions;
 let currentQuestionIndex = 0;
@@ -37,11 +38,26 @@ function getChapterState(chapterId, totalCount) {
     return chapterProgressStore[chapterId];
 }
 
-function navigateTo(viewName) {
+function getChapterSubject(chapter) {
+    return chapter.subject || 'english';
+}
+
+function getSubjectHeading(subject) {
+    if (subject === 'gs') return 'General Awareness Chapters';
+    if (subject === 'quant') return 'Quantitative Aptitude Chapters';
+    if (subject === 'reasoning') return 'Reasoning Chapters';
+    return 'English Language Chapters';
+}
+
+function navigateTo(viewName, subjectName) {
     const viewHome = document.getElementById('view-home');
     const viewChapters = document.getElementById('view-chapters');
     const viewQuiz = document.getElementById('view-quiz');
     const portalNavbar = document.getElementById('portal-navbar');
+
+    if (subjectName) {
+        currentSubject = subjectName;
+    }
 
     viewHome.classList.add('hidden');
     viewChapters.classList.add('hidden');
@@ -55,7 +71,7 @@ function navigateTo(viewName) {
     } else if (viewName === 'chapters') {
         if (isFullScreenMode) exitFullScreenSilently();
         portalNavbar.classList.remove('hidden');
-        renderChaptersGrid();
+        renderChaptersGrid(currentSubject);
         viewChapters.classList.remove('hidden');
         window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (viewName === 'quiz') {
@@ -64,11 +80,28 @@ function navigateTo(viewName) {
     }
 }
 
-function renderChaptersGrid() {
+function renderChaptersGrid(subjectName = currentSubject) {
+    currentSubject = subjectName;
     const grid = document.getElementById('chapters-grid');
+    const heading = document.getElementById('chapters-heading');
+    if (heading) {
+        heading.textContent = getSubjectHeading(currentSubject);
+    }
+
     grid.innerHTML = '';
 
-    chaptersData.forEach((chapter) => {
+    const filteredChapters = chaptersData.filter(ch => getChapterSubject(ch) === currentSubject);
+
+    if (filteredChapters.length === 0) {
+        grid.innerHTML = `
+            <div class="col-span-full bg-white rounded-2xl border border-slate-200 p-6 text-center text-sm text-slate-500">
+                No chapters added for this subject yet.
+            </div>
+        `;
+        return;
+    }
+
+    filteredChapters.forEach((chapter) => {
         const total = chapter.questions.length;
         const state = total > 0 ? getChapterState(chapter.id, total) : null;
         const attempted = state ? state.userAnswers.filter(a => a !== null).length : 0;
