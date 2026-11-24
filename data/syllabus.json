@@ -145,4 +145,95 @@
           { "name": "15. Constitutional and Non-Constitutional Bodies", "file": "data/gs/05_polity/constitutional_bodies.json", "subtopics": ["Constitutional Bodies", "Statutory Bodies", "Executive Bodies"], "ready": false },
           { "name": "16. New Criminal Laws 2023", "file": "data/gs/05_polity/new_criminal_laws.json", "subtopics": ["BNS", "BNSS", "BSA"], "ready": false },
           { "name": "17. Important Acts", "file": "data/gs/05_polity/important_acts.json", "subtopics": ["Historical Background", "The Company Rule", "The Crown Rule"], "ready": false },
-          { "name": "18. Sources of the Indian Constitution", "file": "data/gs/05_polity/sources_constitution.json", "subtopics": ["British Constitution", "United States Constitution", "Canadian Constitution", "Constitution of the Soviet Union", "Australian Constitution", "Weima
+          { "name": "18. Sources of the Indian Constitution", "file": "data/gs/05_polity/sources_constitution.json", "subtopics": ["British Constitution", "United States Constitution", "Canadian Constitution", "Constitution of the Soviet Union", "Australian Constitution", 
+"Weimar Constitution of Germany", "Irish Constitution", "French Constitution", "Japanese Constitution", "South African Constitution", "Government of India Act, 1935"], "ready": false },
+          { "name": "19. Noteworthy Points", "file": "data/gs/05_polity/noteworthy_points.json", "subtopics": ["General Polity Revision"], "ready": false }
+        ]
+      },
+      {
+        "sectionName": "06. Economics",
+        "chapters": [
+          { "name": "1. Basics of Economy", "file": "data/gs/06_economics/basics_economy.json", "subtopics": ["Economics", "Sectors of Economy"], "ready": false },
+          { "name": "2. Microeconomics", "file": "data/gs/06_economics/microeconomics.json", "subtopics": ["Macroeconomics", "Demand", "Supply", "Costs", "Types of Market", "Macroeconomic Concepts"], "ready": false },
+          { "name": "3. National Income", "file": "data/gs/06_economics/national_income.json", "subtopics": ["Circular Flow of Income", "Aggregates of National Income"], "ready": false },
+          { "name": "4. Budget and Taxation", "file": "data/gs/06_economics/budget_taxation.json", "subtopics": ["Functions of Budget", "Revenue and Capital", "Taxation System in India", "Deficit"], "ready": false },
+          { "name": "5. Inflation and Unemployment", "file": "data/gs/06_economics/inflation_unemployment.json", "subtopics": ["Types of Inflation", "WPI and CPI", "Types of Unemployment"], "ready": false },
+          { "name": "6. Banking: Part 1", "file": "data/gs/06_economics/banking_part1.json", "subtopics": ["Reserve Bank of India (RBI)", "Types of Money", "History of Banking System in India", "Other Financial Institutions", "Microfinance Institutions"], "ready": false },
+          { "name": "7. Monetary Policy", "file": "data/gs/06_economics/monetary_policy.json", "subtopics": ["Reserves Maintained by Banks", "Monetary Policy Tools", "Fiscal Policy"], "ready": false },
+          { "name": "8. Banking: Part 2", "file": "data/gs/06_economics/banking_part2.json", "subtopics": ["Liquidity", "Money Aggregate", "Banking Regulations"], "ready": false },
+          { "name": "9. Poverty and Balance of Payment", "file": "data/gs/06_economics/poverty_bop.json", "subtopics": ["Poverty Estimation in India", "Multidimensional Poverty Index (MPI)", "Balance of Payment (BOP)", "Nostro and Vostro", "Exchange Rate Mechanism"], "ready": false },
+          { "name": "10. Five Year Plan and Industrial Policy Resolution", "file": "data/gs/06_economics/five_year_plan.json", "subtopics": ["Five-Year Plans", "Industrial Policy Resolution (IPR)"], "ready": false },
+          { "name": "11. Indices, Reports & International Institutions", "file": "data/gs/06_economics/indices_reports.json", "subtopics": ["Indices", "Major Economic Reports", "Economic Committees"], "ready": false }
+        ]
+      },
+      {
+        "sectionName": "07. Physics",
+        "chapters": [
+          { "name": "1. Motion", "file": "data/gs/07_physics/motion.json", "subtopics": ["Types of Motion", "Uniform Circular Motion"], "ready": false },
+          { "name": "2. Force and Laws of Motion", "file": "data/gs/07_physics/force_laws.json", "subtopics": ["Balanced and Unbalanced Force", "Laws of Motion"], "ready": false },
+          { "name": "3. Gravitation and Work Done", "file": "data/gs/07_physics/gravitation_work.json", "subtopics": ["Newton's Law of Universal Gravitation", "Work and Energy"], "ready": false },
+          { "name": "4. Sound", "file": "data/gs/07_physics/sound.json", "subtopics": ["Sound Waves", "Reflection of Sound"], "ready": false },
+          { "name": "5. Reflection and Refraction", "file": "data/gs/07_physics/reflection_refraction.json", "subtopics": ["Spherical Mirrors", "Spherical Lenses", "Diffraction"], "ready": false },
+          { "name": "6. Human Eye and Vision", "file": "data/gs/07_physics/human_eye.json", "subtopics": ["Human Eye", "Dispersion of Light", "Electromagnetic Spectrum", "Refraction in Atmosphere"], "ready": false },
+          { "name": "7. Electricity", "file": "data/gs/07_physics/electricity.json", "subtopics": ["Electric Current", "Wheatstone Bridge", "Kirchhoff's Law"], "ready": false },
+          { "name": "8. Magnetic Effect of Electric Current", "file": "data/gs/07_physics/magnetic_effect.json", "subtopics": ["Magnetic Field Lines", "Maxwell's Screw Rule", "Fleming's Left & Right Hand Rule", "Electromagnetic Induction"], "ready": false }
+        ]
+      },
+      {
+        "sectionName": "08. Chemistry",
+        "chapters": [
+          { "name": "1. Matter", "file": "data/gs/08_chemistry/matter.json", "subtopics": ["Four Fundamental States of Matter", "Mixture", "Methods to Separate Components of a Mixture", "Physical and Chemical Changes"], "ready": false },
+          { "name": "2. Atom and Its Structure", "file": "data/gs/08_chemistry/atom_structure.json", "subtopics": ["Laws of Chemical Combination", "The Atomic Models", "Electron, Proton, and Neutron", "Isotopes", "Isobars", "Isotones", "Atomicity", "Mole Concept"], "ready": false },
+          { "name": "3. Periodic Table", "file": "data/gs/08_chemistry/periodic_table.json", "subtopics": ["Early Attempts at Classification of Elements", "Modern Periodic Table", "Trends in Periodic Table", "Concept of Atomicity"], "ready": false },
+          { "name": "4. Chemical Reactions", "file": "data/gs/08_chemistry/chemical_reactions.json", "subtopics": ["Types of Chemical Reaction", "Corrosion", "Rancidity"], "ready": false },
+          { "name": "5. Metals and Non-Metals", "file": "data/gs/08_chemistry/metals_nonmetals.json", "subtopics": ["Metalloids", "Reactivity Series of Metals", "Chemical Properties of Metals & Non Metals", "Metallurgy"], "ready": false },
+          { "name": "6. Acid, Base and Salt", "file": "data/gs/08_chemistry/acid_base_salt.json", "subtopics": ["Neutralisation Reaction", "Chemicals from Common Salt"], "ready": false },
+          { "name": "7. Carbon and Its Compounds", "file": "data/gs/08_chemistry/carbon_compounds.json", "subtopics": ["Allotropes of Carbon", "Hydrocarbons", "Homologous Series", "Organic Compounds", "Soaps and Detergents"], "ready": false }
+        ]
+      },
+      {
+        "sectionName": "09. Biology",
+        "chapters": [
+          { "name": "1. Cell", "file": "data/gs/09_biology/cell.json", "subtopics": ["Cell Structure & Organelles"], "ready": false },
+          { "name": "2. Plant Tissue and Animal Tissue", "file": "data/gs/09_biology/tissues.json", "subtopics": ["Plant Tissue", "Animal Tissue"], "ready": false },
+          { "name": "3. Plant and Animal Kingdom", "file": "data/gs/09_biology/kingdoms.json", "subtopics": ["Plant Kingdom", "Animal Kingdom"], "ready": false },
+          { "name": "4. Nervous System", "file": "data/gs/09_biology/nervous_system.json", "subtopics": ["Brain & Nervous System"], "ready": false },
+          { "name": "5. Hormones and Plant Movement", "file": "data/gs/09_biology/hormones.json", "subtopics": ["Endocrine Glands", "Plant Hormones"], "ready": false },
+          { "name": "6. Reproduction", "file": "data/gs/09_biology/reproduction.json", "subtopics": ["Plant & Animal Reproduction"], "ready": false },
+          { "name": "7. Digestion and Respiration", "file": "data/gs/09_biology/digestion_respiration.json", "subtopics": ["Digestive System", "Respiratory System"], "ready": false },
+          { "name": "8. Circulatory System and Excretory System", "file": "data/gs/09_biology/circulatory_excretory.json", "subtopics": ["Circulatory System", "Excretory System", "Skeletal System"], "ready": false },
+          { "name": "9. Diseases", "file": "data/gs/09_biology/diseases.json", "subtopics": ["Diseases Caused by Virus", "Diseases Caused by Bacteria", "Diseases Caused by Protozoa", "Diseases Caused by Fungus", "Diseases in Plants", "Genetic Disorders"], "ready": false },
+          { "name": "10. Nutrients", "file": "data/gs/09_biology/nutrients.json", "subtopics": ["Nutrition in Animals", "Nutrition in Plants", "Vitamins & Minerals"], "ready": false },
+          { "name": "11. Heredity and Evolution", "file": "data/gs/09_biology/heredity_evolution.json", "subtopics": ["Heredity and Variation", "Gregor Mendel's Experiment"], "ready": false }
+        ]
+      },
+      {
+        "sectionName": "10. Environment",
+        "chapters": [
+          { "name": "1. Basics of Environmental Sciences", "file": "data/gs/10_environment/basics_environment.json", "subtopics": ["Introduction to Environment", "Ecology", "Ecological Succession", "Biotic Interactions"], "ready": false },
+          { "name": "2. Ecosystem", "file": "data/gs/10_environment/ecosystem.json", "subtopics": ["Population Ecology", "Ecosystem", "Aquatic Ecosystem", "Coral Reef", "Estuaries and Mangroves", "Wetlands"], "ready": false },
+          { "name": "3. Trophic Dynamics and Energy Transfer", "file": "data/gs/10_environment/trophic_dynamics.json", "subtopics": ["Energy Flow in Ecosystem", "Food Chain", "Food Web", "Ecological Pyramids"], "ready": false },
+          { "name": "4. Biogeochemical Cycles", "file": "data/gs/10_environment/biogeochemical_cycles.json", "subtopics": ["Carbon Cycle", "Water Cycle", "Nitrogen Cycle", "Phosphorus Cycle", "Sulphur Cycle"], "ready": false },
+          { "name": "5. Environmental Conventions", "file": "data/gs/10_environment/environmental_conventions.json", "subtopics": ["Minamata Convention", "Stockholm Conference", "Nairobi Declaration", "Vienna Convention", "Montreal Protocol", "Stockholm Convention", "Kyoto Protocol", "UNCCD", "Earth Summit", "Johannesburg Declaration", "Basel Convention", "Helsinki Declaration", "Cartagena Protocol on Biosafety", "Rotterdam Convention", "Bonn Convention", "Nagoya Protocol", "Paris Agreement"], "ready": false },
+          { "name": "6. National Parks", "file": "data/gs/10_environment/national_parks.json", "subtopics": ["Conservation Sites", "Biosphere Reserves in India"], "ready": false }
+        ]
+      },
+      {
+        "sectionName": "11. Static GK",
+        "chapters": [
+          { "name": "1. Music and Paintings", "file": "data/gs/11_static_gk/music_paintings.json", "subtopics": ["Indian Music", "Indian Paintings"], "ready": false },
+          { "name": "2. Classical Dance", "file": "data/gs/11_static_gk/classical_dance.json", "subtopics": ["Classical Dances of India"], "ready": false },
+          { "name": "3. Folk Dances of India", "file": "data/gs/11_static_gk/folk_dances.json", "subtopics": ["State-wise Folk Dances"], "ready": false },
+          { "name": "4. Festivals of India", "file": "data/gs/11_static_gk/festivals.json", "subtopics": ["Harvest & Regional Festivals"], "ready": false },
+          { "name": "5. Census", "file": "data/gs/11_static_gk/census.json", "subtopics": ["Census 2011 Highlights"], "ready": false },
+          { "name": "6. Important Days", "file": "data/gs/11_static_gk/important_days.json", "subtopics": ["National & International Days"], "ready": false },
+          { "name": "7. Books and Authors", "file": "data/gs/11_static_gk/books_authors.json", "subtopics": ["Classical & Modern Books"], "ready": false },
+          { "name": "8. Sports", "file": "data/gs/11_static_gk/sports.json", "subtopics": ["Trophies, Terms & Venues"], "ready": false },
+          { "name": "9. International Organisations", "file": "data/gs/11_static_gk/international_org.json", "subtopics": ["UN & Global Headquarters"], "ready": false },
+          { "name": "10. National Organisations", "file": "data/gs/11_static_gk/national_org.json", "subtopics": ["Indian Research & Apex Bodies"], "ready": false },
+          { "name": "11. Awards and Honours", "file": "data/gs/11_static_gk/awards_honours.json", "subtopics": ["Civilian, Gallantry & Literary Awards"], "ready": false }
+        ]
+      }
+    ]
+  }
+}
