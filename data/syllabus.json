@@ -2,7 +2,7 @@
   "English": {
     "hasSubChapters": false,
     "topics": [
-      { "name": "1. Verb", "file": "data/english/verb.json", "ready": false },
+      { "name": "1. Verb", "file": "data/english/verb.json", "ready": true },
       { "name": "2. Tense", "file": "data/english/tense.json", "ready": false },
       { "name": "3. Noun", "file": "data/english/noun.json", "ready": false },
       { "name": "4. Pronoun", "file": "data/english/pronoun.json", "ready": false },
