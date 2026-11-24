@@ -179,40 +179,90 @@ function resetTestState() {
   renderQuestion();
 }
 
-// 3. Render Current Question & Options
+// 3. Render Current Question, Options & Instant English Solution
 function renderQuestion() {
   const q = activeQuestions[currentIndex];
+  const isEnglishInstant = activeSubject === "English";
+  const chosen = userAnswers[currentIndex];
+  const hasAnswered = chosen !== undefined;
+
   document.getElementById("q-curr").textContent = currentIndex + 1;
   document.getElementById("q-total").textContent = activeQuestions.length;
   document.getElementById("q-badge").textContent = q.subtopic || "General";
   document.getElementById("q-text").textContent = q.question;
 
   const optionsList = document.getElementById("options-list");
-  optionsList.innerHTML = q.options
+  let optionsHTML = q.options
     .map((opt, idx) => {
-      const isSelected = userAnswers[currentIndex] === idx;
-      const cardClass = isSelected
-        ? "border-sky-500 bg-sky-50 ring-1 ring-sky-500"
-        : "border-slate-200 bg-white hover:border-sky-400";
-      const badgeClass = isSelected
-        ? "bg-sky-600 text-white border-sky-600"
-        : "bg-slate-100 text-slate-700 border-slate-300";
+      let cardClass = "border-slate-200 bg-white hover:border-sky-400";
+      let badgeClass = "bg-slate-100 text-slate-700 border-slate-300";
+      let iconHTML = "";
+
+      if (isEnglishInstant && hasAnswered) {
+        if (idx === q.answer) {
+          cardClass = "border-emerald-500 bg-emerald-50 ring-1 ring-emerald-500";
+          badgeClass = "bg-emerald-600 text-white border-emerald-600";
+          iconHTML = `<span class="ml-auto text-xs font-extrabold text-emerald-700">✓ Correct</span>`;
+        } else if (idx === chosen) {
+          cardClass = "border-red-500 bg-red-50 ring-1 ring-red-500";
+          badgeClass = "bg-red-600 text-white border-red-600";
+          iconHTML = `<span class="ml-auto text-xs font-extrabold text-red-700">✕ Your Choice</span>`;
+        } else {
+          cardClass = "border-slate-200 bg-slate-50 opacity-70";
+        }
+      } else if (chosen === idx) {
+        cardClass = "border-sky-500 bg-sky-50 ring-1 ring-sky-500";
+        badgeClass = "bg-sky-600 text-white border-sky-600";
+      }
+
+      const disabledAttr = isEnglishInstant && hasAnswered ? "disabled" : "";
 
       return `
-        <button type="button" onclick="selectOption(${idx})"
+        <button type="button" ${disabledAttr} onclick="selectOption(${idx})"
           class="w-full text-left p-3.5 rounded-xl border-2 transition flex items-center gap-3 ${cardClass}">
           <span class="w-8 h-8 rounded-lg border flex items-center justify-center font-extrabold text-xs shrink-0 ${badgeClass}">
             ${String.fromCharCode(65 + idx)}
           </span>
           <span class="text-sm sm:text-base font-medium text-slate-800">${opt}</span>
+          ${iconHTML}
         </button>`;
     })
     .join("");
 
+  // Instant 4-Point Solution Box for English
+  if (isEnglishInstant && hasAnswered) {
+    const correctLetter = String.fromCharCode(65 + q.answer);
+    const ruleText = q.rule || q.explanation || "No rule provided.";
+    const distractorText = q.distractor || "Review the other options carefully to avoid trap choices.";
+    const shortcutText = q.shortcut || "Look for key tense/subject clues in the sentence.";
+
+    optionsHTML += `
+      <div class="mt-5 bg-slate-50 border-2 border-sky-200 rounded-2xl p-4 sm:p-5 space-y-3 text-xs sm:text-sm">
+        <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+          <span class="font-extrabold text-sky-900 text-sm"><i class="fa-solid fa-lightbulb text-amber-500 mr-1.5"></i>Instant Exam Breakdown</span>
+          <span class="bg-emerald-100 text-emerald-800 font-extrabold px-2.5 py-0.5 rounded-md">Correct: (${correctLetter}) ${q.options[q.answer]}</span>
+        </div>
+        <div>
+          <p class="font-bold text-slate-900">1. Grammar Rule / Vocabulary Nuance:</p>
+          <p class="text-slate-700 mt-0.5">${ruleText}</p>
+        </div>
+        <div class="bg-amber-50/80 border-l-4 border-amber-500 p-2.5 rounded-r-lg">
+          <p class="font-bold text-amber-900">2. The 'Distractor' (Common Trap):</p>
+          <p class="text-amber-950 mt-0.5">${distractorText}</p>
+        </div>
+        <div class="bg-sky-50 border-l-4 border-sky-600 p-2.5 rounded-r-lg">
+          <p class="font-bold text-sky-900">3. 10-Second Exam Shortcut / Keyword:</p>
+          <p class="text-sky-950 mt-0.5">${shortcutText}</p>
+        </div>
+      </div>`;
+  }
+
+  optionsList.innerHTML = optionsHTML;
   renderPalette();
 }
 
 function selectOption(optIdx) {
+  if (activeSubject === "English" && userAnswers[currentIndex] !== undefined) return;
   userAnswers[currentIndex] = optIdx;
   renderQuestion();
 }
@@ -261,7 +311,7 @@ function renderPalette() {
     .join("");
 }
 
-// 4. Submit & Show Explanations
+// 4. Submit & Show Full Summary
 function submitTest() {
   clearInterval(timerInterval);
   let correct = 0;
@@ -284,6 +334,11 @@ function submitTest() {
       }
 
       const yourAnsText = chosen !== undefined ? q.options[chosen] : "Not Attempted";
+      const extraDetails = q.rule
+        ? `<p class="mt-1"><strong>Rule:</strong> ${q.rule}</p>
+           <p class="mt-1"><strong>Distractor Trap:</strong> ${q.distractor || ""}</p>
+           <p class="mt-1"><strong>10-Sec Shortcut:</strong> ${q.shortcut || ""}</p>`
+        : `<p><strong>Explanation:</strong> ${q.explanation || "No explanation provided."}</p>`;
 
       return `
         <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-2xs space-y-2.5">
@@ -297,7 +352,7 @@ function submitTest() {
             <p><strong class="text-slate-600">Your Answer:</strong> ${yourAnsText}</p>
           </div>
           <div class="bg-sky-50/80 border-l-4 border-sky-600 p-3 rounded-r-xl text-xs sm:text-sm text-slate-700">
-            <strong class="text-sky-900">Explanation:</strong> ${q.explanation || "No explanation provided."}
+            ${extraDetails}
           </div>
         </div>`;
     })
