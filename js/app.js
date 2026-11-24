@@ -1,5 +1,6 @@
 let syllabusData = {};
 let activeSubject = "";
+let activeGsSection = 0;
 let allTopicQuestions = [];
 let activeQuestions = [];
 let currentIndex = 0;
@@ -46,29 +47,58 @@ function selectSubject(subject) {
     activeBtn.className = "tab-btn px-4 py-2.5 rounded-xl border border-sky-600 bg-sky-600 text-white font-bold text-xs sm:text-sm transition shadow-xs";
   }
 
-  const container = document.getElementById("chapters-container");
   const subjectObj = syllabusData[subject];
 
+  // If General Awareness (hasSubChapters), show sub-subject buttons first
   if (subjectObj.hasSubChapters) {
-    container.innerHTML = subjectObj.sections
-      .map(
-        (sec) => `
-        <div class="space-y-3">
-          <h2 class="text-base sm:text-lg font-extrabold text-slate-900 border-b border-slate-200 pb-2">
-            ${sec.sectionName}
-          </h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            ${sec.chapters.map((ch) => buildChapterCard(ch)).join("")}
-          </div>
-        </div>`
-      )
-      .join("");
+    selectGsSection(0);
   } else {
+    const container = document.getElementById("chapters-container");
     container.innerHTML = `
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         ${subjectObj.topics.map((topic) => buildChapterCard(topic)).join("")}
       </div>`;
   }
+}
+
+// Render GS Subject Filter Buttons + Only the Selected Subject's Chapters
+function selectGsSection(secIndex) {
+  activeGsSection = secIndex;
+  const sections = syllabusData[activeSubject].sections;
+  const chosenSec = sections[secIndex];
+  const container = document.getElementById("chapters-container");
+
+  const pillsHTML = sections
+    .map((sec, idx) => {
+      const isSelected = idx === secIndex;
+      const btnStyle = isSelected
+        ? "bg-slate-900 text-white border-slate-900 shadow-xs"
+        : "bg-white text-slate-700 border-slate-200 hover:border-sky-400";
+      return `
+        <button type="button" onclick="selectGsSection(${idx})"
+          class="px-3.5 py-2 rounded-xl border text-xs sm:text-sm font-bold transition ${btnStyle}">
+          ${sec.sectionName}
+        </button>`;
+    })
+    .join("");
+
+  container.innerHTML = `
+    <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-2xs">
+      <p class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 mb-2.5">Select General Awareness Subject</p>
+      <div class="flex flex-wrap gap-2">
+        ${pillsHTML}
+      </div>
+    </div>
+
+    <div class="space-y-3">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+        <h2 class="text-base sm:text-lg font-extrabold text-slate-900">${chosenSec.sectionName}</h2>
+        <span class="text-xs font-bold text-slate-500">${chosenSec.chapters.length} Chapters</span>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        ${chosenSec.chapters.map((ch) => buildChapterCard(ch)).join("")}
+      </div>
+    </div>`;
 }
 
 function buildChapterCard(item) {
