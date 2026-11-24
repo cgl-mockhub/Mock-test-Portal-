@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "subtopic": "Causative Verbs",
+    "question": "The manager had his assistant _____ the updated report before the client arrived.",
+    "options": ["to prepare", "prepared", "prepare", "preparing"],
+    "answer": 2,
+    "rule": "Active Causative Structure: When 'have' is followed by a person (the doer), we use the bare infinitive (base verb without 'to') → have + person + V1.",
+    "distractor": "Option (A) 'to prepare' is the most common trap because students naturally want to put 'to' before a verb, while (B) 'prepared' is only used in passive causatives (when the object is a non-living thing, e.g., 'had the report prepared').",
+    "shortcut": "Keyword: 'had + [person]' → Always pick the plain V1 base verb ('prepare')."
+  },
+  {
+    "id": 2,
+    "subtopic": "Verbs Followed by Gerund",
+    "question": "She insisted on _____ the entire project by herself despite the tight deadline.",
+    "options": ["complete", "to complete", "completing", "completed"],
+    "answer": 2,
+    "rule": "Preposition + Gerund Rule: Any verb coming immediately after a preposition ('on', 'in', 'at', 'of', 'for', 'from') must take the -ing (Gerund) form.",
+    "distractor": "Option (B) 'to complete' is a frequent distractor because 'insist' feels like a command, tempting students to use an infinitive ('to + V1').",
+    "shortcut": "Keyword: Preposition 'on' right before the blank → Blindly pick the '-ing' option ('completing')."
+  },
+  {
+    "id": 3,
+    "subtopic": "Confusing Verb Pairs",
+    "question": "After working continuously for twelve hours, he went to his room and _____ down on the bed.",
+    "options": ["lied", "laid", "lay", "lain"],
+    "answer": 2,
+    "rule": "'Lie' (to recline/rest, no object) has forms: Lie (V1) – Lay (V2, past) – Lain (V3). Here, 'went' shows past tense, so V2 'lay' is required.",
+    "distractor": "Option (B) 'laid' is the past tense of 'lay' (to place/put something down, which requires a direct object like 'laid the book on the table'), and (A) 'lied' means to tell an untruth.",
+    "shortcut": "Keyword: No object after the blank + past tense ('went') → 'lay' = rested; 'laid' = placed an object."
+  }
+]
